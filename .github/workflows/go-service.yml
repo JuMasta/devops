@@ -6,7 +6,7 @@ on:
     tags:
       - '*'
     paths:
-      - 'service/**'    
+      - 'go-service/**'    
 jobs:
   build-and-push:
     name: Build and Push to registry
