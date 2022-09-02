@@ -31,7 +31,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-           context: .
-           file: Dockerfile
+           context: ./go-service
+           file: ./go-service/Dockerfile
            push: true
            tags: ${{ secrets.DOCKER_USERNAME }}/awesome-service:${{github.ref_name}}
