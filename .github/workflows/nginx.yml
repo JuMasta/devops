@@ -1,7 +1,7 @@
 name: nginx build push
 
 on:
-  create:
+  push:
     tags:
       - '*'
     paths:

@@ -1,0 +1,48 @@
+version: '3.4'
+
+services:
+
+  nginx:
+      container_name: nginx
+      image: jumasta/nginx:${TAG}
+      env_file:
+      - .env
+      ports:
+      - "${NGINX_PORT}:80"
+
+
+  awesome-service:
+    container_name: awesome-service
+    image: jumasta/awesome-service:${TAG}
+    env_file:
+    - .env
+
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    user: root
+    volumes:
+      - "./grafana/data:/data/grafana"
+      - "./grafana/datasources:/etc/grafana/provisioning/datasources"
+      - "./grafana/dashboards/go.yml:/etc/grafana/provisioning/dashboards/go.yml"
+      - "./grafana/dashboards/folders:/etc/dashboards"
+    ports:
+      - 3000:3000
+    env_file:
+    - .env      
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GF_ADMIN}
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_PASSWORD}
+      - GF_PATHS_DATA=/data/grafana
+
+
+
