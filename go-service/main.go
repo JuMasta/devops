@@ -24,11 +24,27 @@ func getRoot(w http.ResponseWriter, r *http.Request) {
 	requestCount.Inc()
 }
 
+func healthCheck(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf(" health check request\n")
+	fmt.Printf("application is healthy\n")
+	w.WriteHeader(http.StatusOK)
+    w.Write([]byte("200 - Everything is healthy!"))
+}
+
+func readinessCheck(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf(" readiness check request\n")
+	fmt.Printf("application is ready\n")
+	w.WriteHeader(http.StatusOK)
+    w.Write([]byte("200 - Everything is ready!"))
+}
+
 func main() {
 
 	wg := new(sync.WaitGroup)
 	wg.Add(2)
 
+	http.HandleFunc("/readiness", readinessCheck)
+	http.HandleFunc("/healthz", healthCheck)
 	http.HandleFunc("/", getRoot)
 
 	go func() {
